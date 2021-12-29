@@ -1,0 +1,189 @@
+\mode<presentation> %%
+
+% Requirement
+\RequirePackage{tikz}
+
+% Functions
+\usepackage{xstring}
+\newcommand{\fileize}[1]{
+	\StrDel[0]{#1}{ }[\temp]%
+	\MakeLowercase{\temp}%
+}
+
+\makeatletter
+\newcommand{\insertacmetitle}{
+	\beamer@setupshort{}%
+	\let\thanks=\@gobble%
+	\fileize{\beamer@insertshort{\beamer@shorttitle}}
+}
+\makeatother
+
+% Colors :)
+\definecolor{ACMELightYellow}{RGB}{255, 255, 234}
+\definecolor{ACMEDarkYellow}{RGB}{153, 153, 76}
+\definecolor{ACMELightBlue}{RGB}{234, 255, 255}
+\definecolor{ACMEDarkBlue}{RGB}{140, 133, 206}
+\definecolor{ACMESelectBlue}{RGB}{0, 0, 153}
+\definecolor{RIOBlue}{RGB}{159, 239, 239}
+
+% Font :)
+% Use need to own the Lucida license for this
+\usefonttheme{professionalfonts}
+\usepackage{lucimatx}
+
+\setbeamersize{
+	text margin left	= 95pt,
+}
+
+% Easy Templates
+\setbeamercolor*{title page header}{fg=black}
+\setbeamercolor*{frametitle}{fg=black}
+\setbeamercolor*{author}{fg=black}
+\setbeamercolor*{date}{fg=black}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor*{items}{fg=black}
+\setbeamertemplate{itemize items}{-}
+
+% Rio Blocks
+\usepackage[listings,theorems]{tcolorbox}
+\setbeamercolor{block title}{fg=black, bg=white}
+\setbeamercolor{block body}{fg=black, bg=white}
+\setbeamertemplate{block begin}{%
+	\begin{tcolorbox}%
+		[colback=white, colframe=RIOBlue, arc=0mm]%
+		{\usebeamerfont*{block title} \insertblocktitle}%
+		\vskip\smallskipamount
+}
+\setbeamertemplate{block end}{\end{tcolorbox}}
+
+
+% Navigation styles
+\makeatletter
+\setbeamertemplate{section in head/foot}{
+	\textcolor{black}{\MakeLowercase{\insertsectionhead}} \hfil
+}
+\setbeamertemplate{section shaded in head/foot}{
+	\usebeamertemplate{section in head/foot}
+}
+\setbeamertemplate{subsection in head/foot}{
+	\textcolor{black}{\MakeLowercase{\insertsubsectionhead}} \hfil
+}
+\setbeamertemplate{subsection shaded in head/foot}{
+	\uesbeamertemplate{subsection in head/foot}
+}
+%\addtobeamertemplate{subsubsection in toc}{\tiny\bf}{}
+%\addtobeamertemplate{subsubsection shaded in toc}{\tiny\bf}{}
+\makeatother
+
+% Set background
+\makeatletter
+\setbeamertemplate{background}{
+	\begin{tikzpicture}
+		\useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+		% Yellow background
+		\fill[color=ACMELightYellow] (0,0) rectangle (\the\paperwidth,\the\paperheight);
+		% Top two nav bars
+		\fill[color=ACMELightBlue] (0,\paperheight) rectangle (\the\paperwidth,\paperheight- 14pt);
+		\fill[color=ACMEDarkBlue] (0,\paperheight -  7pt) rectangle (5pt,\paperheight- 14pt);
+		\draw[color=black] (0,\paperheight - 7pt) -- (\the\paperwidth, \paperheight -  7pt);
+		{\node[anchor=west, font=\tiny\bf] at ( -4pt,\paperheight - 4pt){\insertacmetitle Newcol Kill Putall Dump Exit};}
+
+		% Styles for everything except the title
+		\ifnum\thepage>1\relax
+			% The third nav bar and adding more styling to the top 2
+			\draw[color=black] (0,\paperheight - 14pt) -- (\the\paperwidth, \paperheight - 14pt);
+			{\node[anchor=west, font=\tiny\bf] at ( 4pt,\paperheight - 11pt){New Cut Paste Snarf Sort Zerox};}
+			{\node[anchor=west, font=\tiny\bf] at ( 85pt,\paperheight - 11pt){New Cut Paste Snarf Sort Zerox Delcol |};}
+			\fill[color=ACMELightBlue] (0,\paperheight - 14pt) rectangle (\the\paperwidth,\paperheight- 21pt);
+			\fill[color=ACMEDarkBlue] (80pt,\paperheight -  7pt) rectangle (86pt,\paperheight- 14pt);
+			\fill[color=ACMESelectBlue] (0,\paperheight -  14pt) rectangle (5pt,\paperheight- 21pt);
+			\draw[color=ACMEDarkBlue, line width=1pt] (0pt,\paperheight -  14.5pt) rectangle (4.5pt,\paperheight- 20.5pt);
+			\draw[color=ACMEDarkBlue, line width=1pt] (80.5pt,\paperheight -  14.5pt) rectangle (85.5pt,\paperheight- 20.5pt);
+			\draw[color=black] (0,\paperheight -  7pt) -- (\the\paperwidth, \paperheight -  7pt);
+			\draw[color=black] (0,\paperheight - 14pt) -- (\the\paperwidth, \paperheight - 14pt);
+			\draw[color=ACMEDarkBlue] (0,\paperheight - 21pt) -- (\the\paperwidth, \paperheight - 21pt);
+			{\node[anchor=west, font=\tiny\bf] at ( 4pt,\paperheight - 18pt){summary/ Del Snarf | Look};}
+			{\node[anchor=north west, font=\tiny\bf] at ( -5pt,\paperheight - 21pt){\insertsectionnavigation{80pt}};}
+			\draw[color=ACMEDarkYellow] (5pt,-1) -- (5pt, \paperheight-21pt);
+
+			\ifx\insertsubsection\@empty
+				{\node[anchor=west, font=\tiny\bf] at ( 85pt,\paperheight - 18pt){summary/\MakeLowercase{\insertsection} Del Snarf | Look};}
+			\else
+				{\node[anchor=north west, font=\tiny\bf] at ( -5pt,\paperheight/2 -7pt){\insertsubsectionnavigation{80pt}};}
+				\fill[color=ACMELightBlue] (0,\paperheight/2) rectangle (80pt,\paperheight/2 - 7pt);
+				\fill[color=ACMELightBlue] (0,\paperheight -  14pt) rectangle (5pt,\paperheight- 21pt);
+				\draw[color=ACMEDarkBlue, line width=1pt] (0pt,\paperheight -  14.5pt) rectangle (4.5pt,\paperheight- 20.5pt);
+				\fill[color=ACMESelectBlue] (0,\paperheight/2) rectangle (5pt,\paperheight/2 - 7pt);
+				\draw[color=ACMEDarkBlue, line width=1pt] (0pt,\paperheight/2 - 0.5pt) rectangle (4.5pt,\paperheight/2 - 6.5pt);
+				\draw[color=black] (0,\paperheight/2) -- (80pt, \paperheight/2);
+				\draw[color=ACMEDarkBlue] (0,\paperheight/2-7pt) -- (80pt, \paperheight/2 - 7pt);
+				{\node[anchor=west, font=\tiny\bf] at ( 4pt,\paperheight/2 - 4pt){summary/\MakeLowercase{\insertsection}/ Del Snarf | Look};}
+		
+				\fill[color=ACMELightYellow] (80pt,\paperheight-23pt) rectangle (\the\paperwidth,0);
+
+				\ifx\insertsubsubsection\@empty
+					{\node[anchor=west, font=\tiny\bf] at ( 85pt,\paperheight - 18pt){summary/\MakeLowercase{\insertsection/\insertsubsection} Del Snarf | Look};}
+				\else
+					{\node[anchor=west, font=\tiny\bf] at ( 85pt,\paperheight - 18pt){summary/\MakeLowercase{\insertsection/\insertsubsection/\insertsubsubsection} Del Snarf | Look};}
+				\fi
+
+%				\ifx\insertsubsubsection\@empty
+%					{\node[anchor=west, font=\tiny\bf] at ( 85pt,\paperheight - 18pt){summary/\MakeLowercase{\insertsection/\insertsubsection}.txt Del Snarf | Look};}
+%				\else
+%					{\node[anchor=north west, font=\tiny\bf] at ( 5pt,\paperheight/4 - 11pt){\begin{minipage}{80pt}\tableofcontents[currentsubsection, sectionstyle=hide, subsectionstyle=hide, subsubsectionstyle=show/show/hide]\end{minipage}};}
+%					\fill[color=ACMELightBlue] (0,\paperheight/4) rectangle (80pt,\paperheight/4 - 7pt);
+%					\fill[color=ACMESelectBlue] (0,\paperheight/4) rectangle (5pt,\paperheight/4 - 7pt);
+%					\fill[color=ACMEDarkBlue] (0,\paperheight/2) rectangle (5pt,\paperheight/2 - 7pt);
+%					\draw[color=black] (0,\paperheight/4) -- (80pt, \paperheight/4);
+%					\draw[color=black] (0,\paperheight/4-7pt) -- (80pt, \paperheight/4 - 7pt);
+%					{\node[anchor=west, font=\tiny\bf] at ( 4pt,\paperheight/4 - 4pt){summary/\MakeLowercase{\insertsection/\insertsubsection}/ Del Snarf | Look};}
+%					{\node[anchor=west, font=\tiny\bf] at ( 85pt,\paperheight - 18pt){summary/\MakeLowercase{\insertsection/\insertsubsection/\insertsubsubsection}.txt Del Snarf | Look};}
+%				\fi
+			\fi
+
+			\draw[color=black] (80pt,-1) -- (80pt, \paperheight - 7pt);
+			\draw[color=ACMEDarkYellow] (86pt,-1) -- (86pt, \paperheight - 21pt);
+		\else
+			\draw[color=ACMEDarkBlue] (0,\paperheight - 14pt) -- (\the\paperwidth, \paperheight - 14pt);
+			{\node[anchor=west, font=\tiny\bf] at ( 4pt,\paperheight - 11pt){New Cut Paste Snarf Sort Zerox Delcol |};}
+			\draw[color=ACMEDarkYellow] (5pt,-1) -- (5pt, \paperheight-14pt);
+		\fi
+	\end{tikzpicture}
+}
+\makeatother
+
+% Frame title
+\setbeamertemplate{frametitle}
+{
+	\vspace{25pt}
+
+	{\large \MakeUppercase{\insertframetitle}}
+	
+	{\small \insertframesubtitle}
+}
+
+% Title page
+\defbeamertemplate*{title page}{texsx}[1][]
+{
+	\vskip6cm%
+
+	\begin{beamercolorbox}[wd=\textwidth, leftskip=-80pt, #1]{title page header}
+		\usebeamerfont{title}\inserttitle\par%
+	\end{beamercolorbox}%
+
+	\vskip0.75cm%
+
+	\begin{beamercolorbox}[wd=\textwidth, leftskip=-80pt, #1]{author}
+		\usebeamerfont{author}\insertauthor%
+	\end{beamercolorbox}
+
+	\vskip0.2cm%
+
+	\begin{beamercolorbox}[wd=\textwidth, leftskip=-80pt, #1]{date}
+		\usebeamerfont{author}\insertdate%
+	\end{beamercolorbox}
+
+	\vfill
+}
+
+\mode<all>
